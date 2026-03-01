@@ -1,0 +1,17 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv('../data/wind_data.csv')
+
+# Feature correlation
+plt.figure(figsize=(8,6))
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+plt.title("Feature Correlation")
+plt.show()
+
+# Scatter: Wind Speed vs Energy Output
+plt.figure(figsize=(8,6))
+sns.scatterplot(x='Wind_Speed', y='Energy_Output', data=df)
+plt.title("Wind Speed vs Energy Output")
+plt.show()
