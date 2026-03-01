@@ -1,0 +1,26 @@
+import pandas as pd
+import joblib
+from tensorflow.keras.models import load_model
+from sklearn.preprocessing import StandardScaler
+
+# Example input
+new_data = pd.DataFrame({
+    'Wind_Speed': [10.5],
+    'Wind_Direction': [190],
+    'Temperature': [24.0],
+    'Humidity': [55]
+})
+
+# Load ML models
+lr_model = joblib.load('../model/lr_model.pkl')
+rf_model = joblib.load('../model/rf_model.pkl')
+tf_model = load_model('../model/tf_wind_model.h5')
+
+# Prediction
+lr_pred = lr_model.predict(new_data)
+rf_pred = rf_model.predict(new_data)
+tf_pred = tf_model.predict(new_data)
+
+print(f"Linear Regression Prediction: {lr_pred[0]:.2f} kW")
+print(f"Random Forest Prediction: {rf_pred[0]:.2f} kW")
+print(f"TensorFlow Prediction: {tf_pred[0][0]:.2f} kW")
