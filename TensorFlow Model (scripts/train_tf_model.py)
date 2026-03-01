@@ -1,0 +1,37 @@
+import pandas as pd
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.callbacks import EarlyStopping
+
+# Load data
+X_train = pd.read_csv('../data/X_train_scaled.csv')
+X_test = pd.read_csv('../data/X_test_scaled.csv')
+y_train = pd.read_csv('../data/y_train.csv')
+y_test = pd.read_csv('../data/y_test.csv')
+
+# Define model
+model = Sequential([
+    Dense(64, activation='relu', input_shape=(X_train.shape[1],)),
+    Dense(32, activation='relu'),
+    Dense(1)
+])
+
+model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+
+# Early stopping
+es = EarlyStopping(monitor='val_loss', patience=10)
+
+# Train model
+history = model.fit(
+    X_train, y_train,
+    validation_data=(X_test, y_test),
+    epochs=100,
+    batch_size=8,
+    callbacks=[es],
+    verbose=1
+)
+
+# Save TensorFlow model
+model.save('../model/tf_wind_model.h5')
+print("TensorFlow Model Trained & Saved ✅")
